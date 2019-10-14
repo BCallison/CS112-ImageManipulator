@@ -19,6 +19,9 @@ int main(int argc, char* argv[])
 	int counter = 0;
 	int max_color = 0;
 	int image_effect = 0;
+	int color_val = 0;
+	int gray_val = 0;
+	int count = 0;
 
 
 	//Getting source file
@@ -32,11 +35,11 @@ int main(int argc, char* argv[])
 	// Prompting for image effect wanted
 	cout << "Enter the number associated with the desired image effect would you like?." << endl;
 	cout << "1. Remove Red" << endl;
-	cout << "2. Remove Blue" << endl;
-	cout << "3. Remove Green" << endl;
+	cout << "2. Remove Green" << endl;
+	cout << "3. Remove Blue" << endl;
 	cout << "4. Negate Red" << endl;
-	cout << "5. Negate Blue" << endl;
-	cout << "6. Negate Green" << endl;
+	cout << "5. Negate Green" << endl;
+	cout << "6. Negate Blue" << endl;
 	cout << "7. Grayscale" << endl;
 	cin >> image_effect;
 
@@ -65,7 +68,7 @@ int main(int argc, char* argv[])
 		string sentence = lines[i];
 		istringstream iss(sentence);
 
-		while(iss.good() == true)
+		while (iss.good() == true)
 		{
 			int sub;
 			iss >> sub;
@@ -73,8 +76,8 @@ int main(int argc, char* argv[])
 			{
 				vals.push_back(sub);
 			}
-			
-		} 
+
+		}
 	}
 
 	output_file << lines[0] << endl << lines[1] << endl << lines[2] << endl;
@@ -116,7 +119,7 @@ int main(int argc, char* argv[])
 	//This effect removes blue values from the image
 	if (image_effect == 3)
 	{
-		for (int i = 3; i < vals.size(); i++)
+		for (int i = 2; i < vals.size(); i++)
 		{
 			if ((i + 2) % 3 == 0)
 			{
@@ -125,6 +128,77 @@ int main(int argc, char* argv[])
 			else
 			{
 				output_file << vals[i] << endl;
+			}
+
+		}
+	}
+
+	// Negating Red
+	if (image_effect == 4)
+	{
+		for (int i = 0; i < vals.size(); i++)
+		{
+			if ((i + 0) % 3 == 0)
+			{
+				color_val = 255 - vals[i];
+				output_file << color_val << endl;
+			}
+			else
+			{
+				output_file << vals[i] << endl;
+			}
+
+		}
+	}
+
+	// Negating Green
+	if (image_effect == 5)
+	{
+		for (int i = 1; i < vals.size(); i++)
+		{
+			if ((i + 1) % 3 == 0)
+			{
+				color_val = 255 - vals[i];
+				output_file << color_val << endl;
+			}
+			else
+			{
+				output_file << vals[i] << endl;
+			}
+
+		}
+	}
+
+	// Negating Blue
+	if (image_effect == 6)
+	{
+		for (int i = 2; i < vals.size(); i++)
+		{
+			if ((i + 2) % 3 == 0)
+			{
+				color_val = 255 - vals[i];
+				output_file << color_val << endl;
+			}
+			else
+			{
+				output_file << vals[i] << endl;
+			}
+
+		}
+	}
+
+	// Grayscale
+	if (image_effect == 7)
+	{
+		while (count <= 3)
+		{
+			for (int i = 0; i < vals.size(); i += 3)
+			{
+				gray_val = (vals[i] + vals[i + 1] + vals[i + 2]) / 3;
+				output_file << gray_val << endl;
+				output_file << gray_val << endl;
+				output_file << gray_val << endl;
+				count = count++;
 			}
 
 		}

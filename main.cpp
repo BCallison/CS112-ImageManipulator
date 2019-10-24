@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <stdlib.h>
+
 using namespace std;
 
 int main(int argc, char* argv[])
@@ -22,6 +24,9 @@ int main(int argc, char* argv[])
 	int color_val = 0;
 	int gray_val = 0;
 	int count = 0;
+	int randNum = 0;
+	int randMin = -7;
+	int randMax = 7;
 
 
 	//Getting source file
@@ -41,6 +46,11 @@ int main(int argc, char* argv[])
 	cout << "5. Negate Green" << endl;
 	cout << "6. Negate Blue" << endl;
 	cout << "7. Grayscale" << endl;
+	cout << "8. Add Noise" << endl;
+	cout << "9. High Contrast" << endl;
+	cout << "Q. Quit" << endl;
+
+
 	cin >> image_effect;
 
 
@@ -202,5 +212,56 @@ int main(int argc, char* argv[])
 			}
 
 		}
+	}
+	//Adds Noise to the image
+
+	if (image_effect == 8)
+	{
+		srand(time(0));
+		while (count <= 3)
+		{
+			randNum = rand() % (randMax - randMin + 1) + randMin;
+			for (int i = 0; i < vals.size(); i += 3)
+			{
+				if ((i + randNum > 0) && (i + randNum < 255))
+				{
+					color_val = randNum + vals[i];
+					output_file << color_val << endl;
+					color_val = randNum + vals[i + 1];
+					output_file << color_val << endl;
+					color_val = randNum + vals[i + 2];
+					output_file << color_val << endl;
+					count = count++;
+				}
+
+				else if (i + randNum > 255)
+				{
+					output_file << 255 << endl;
+					count = count++;
+					output_file << 255 << endl;
+					count = count++;
+					output_file << 255 << endl;
+					count = count++;
+				}
+
+				else if (i + randNum < 0)
+				{
+					output_file << 0 << endl;
+					count = count++;
+					output_file << 0 << endl;
+					count = count++;
+					output_file << 0 << endl;
+					count = count++;
+				}
+			}
+		}
+		
+	}
+
+
+	// Quits program
+	if (image_effect == 'Q')
+	{
+		return 0;
 	}
 }

@@ -20,13 +20,15 @@ int main(int argc, char* argv[])
 	string output_file_name;
 	int counter = 0;
 	int max_color = 0;
-	int image_effect = 0;
+	char image_effect = 0;
 	int color_val = 0;
 	int gray_val = 0;
 	int count = 0;
 	int randNum = 0;
-	int randMin = -7;
-	int randMax = 7;
+	int randMin = -10;
+	int randMax = 10;
+	int true_input = 0;
+	vector<int> output;
 
 
 	//Getting source file
@@ -37,231 +39,292 @@ int main(int argc, char* argv[])
 	cout << "Enter destination file: " << endl;
 	cin >> output_file_name;
 
-	// Prompting for image effect wanted
-	cout << "Enter the number associated with the desired image effect would you like?." << endl;
-	cout << "1. Remove Red" << endl;
-	cout << "2. Remove Green" << endl;
-	cout << "3. Remove Blue" << endl;
-	cout << "4. Negate Red" << endl;
-	cout << "5. Negate Green" << endl;
-	cout << "6. Negate Blue" << endl;
-	cout << "7. Grayscale" << endl;
-	cout << "8. Add Noise" << endl;
-	cout << "9. High Contrast" << endl;
-	cout << "Q. Quit" << endl;
-
-
-	cin >> image_effect;
-
-
-	//Open the input file
-	ifstream input{ input_file };
-
-	//Open the output file
-	ofstream output_file{ output_file_name };
-
-	vector<string> lines{};
-	if (input.is_open() == true)
+	while (image_effect != 'Q')
 	{
-		while (input.good() == true)
+		// Prompting for image effect wanted
+		cout << "Enter the number associated with the desired image effect would you like?." << endl;
+		cout << "1. Remove Red" << endl;
+		cout << "2. Remove Green" << endl;
+		cout << "3. Remove Blue" << endl;
+		cout << "4. Negate Red" << endl;
+		cout << "5. Negate Green" << endl;
+		cout << "6. Negate Blue" << endl;
+		cout << "7. Grayscale" << endl;
+		cout << "8. Add Noise" << endl;
+		cout << "9. High Contrast" << endl;
+		cout << "Q. Quit" << endl;
+
+
+		cin >> image_effect;
+
+		//Open the input file
+		ifstream input{ input_file };
+
+
+		//Open the output file
+		ofstream output_file{ output_file_name };
+
+		vector<string> lines{};
+		if (input.is_open() == true)
 		{
-			string line;
-			getline(input, line);
-			lines.push_back(line);
+			while (input.good() == true)
+			{
+				string line;
+				getline(input, line);
+				lines.push_back(line);
+			}
 		}
-	}
 
 
-	vector<int> vals{};
-	for (int i = 3; i != lines.size(); i++)
-	{
-		string sentence = lines[i];
-		istringstream iss(sentence);
-
-		while (iss.good() == true)
+		vector<int> vals{};
+		for (int i = 3; i != lines.size(); i++)
 		{
-			int sub;
-			iss >> sub;
-			if (iss.fail() == false)
-			{
-				vals.push_back(sub);
-			}
+			string sentence = lines[i];
+			istringstream iss(sentence);
 
+			while (iss.good() == true)
+			{
+				int sub;
+				iss >> sub;
+				if (iss.fail() == false)
+				{
+					vals.push_back(sub);
+				}
+
+			}
 		}
-	}
 
-	output_file << lines[0] << endl << lines[1] << endl << lines[2] << endl;
+		output_file << lines[0] << endl << lines[1] << endl << lines[2] << endl;
 
-	//This effect removes red values from the image
-	if (image_effect == 1)
-	{
-		for (int i = 0; i < vals.size(); i++)
+		//This effect removes red values from the image
+		if (image_effect == '1')
 		{
-			if ((i + 0) % 3 == 0)
+			if (output.size() > 0)
 			{
-				output_file << 0 << endl;
+				vals = output;
+				output.clear();
 			}
-			else
+			for (int i = 0; i < vals.size(); i++)
 			{
-				output_file << vals[i] << endl;
-			}
+				if ((i + 0) % 3 == 0)
+				{
+					output.push_back(0);
+				}
+				else
+				{
+					output.push_back(vals[i]);
+				}
 
+			}
 		}
-	}
 
-	//This effect removes green values from the image
-	if (image_effect == 2)
-	{
-		for (int i = 1; i < vals.size(); i++)
+		//This effect removes green values from the image
+		if (image_effect == '2')
 		{
-			if ((i + 1) % 3 == 0)
+			if (output.size() > 0)
 			{
-				output_file << 0 << endl;
+				vals = output;
+				output.clear();
 			}
-			else
+			for (int i = 1; i < vals.size(); i++)
 			{
-				output_file << vals[i] << endl;
-			}
+				if ((i + 1) % 3 == 0)
+				{
+					output_file << 0 << endl;
+				}
+				else
+				{
+					output_file << vals[i] << endl;
+				}
 
+			}
 		}
-	}
 
-	//This effect removes blue values from the image
-	if (image_effect == 3)
-	{
-		for (int i = 2; i < vals.size(); i++)
+		//This effect removes blue values from the image
+		if (image_effect == '3')
 		{
-			if ((i + 2) % 3 == 0)
+			if (output.size() > 0)
 			{
-				output_file << 0 << endl;
+				vals = output;
+				output.clear();
 			}
-			else
+			for (int i = 2; i < vals.size(); i++)
 			{
-				output_file << vals[i] << endl;
-			}
+				if ((i + 2) % 3 == 0)
+				{
+					output.push_back(0);
+				}
+				else
+				{
+					output.push_back(vals[i]);
+				}
 
+			}
 		}
-	}
 
-	// Negating Red
-	if (image_effect == 4)
-	{
-		for (int i = 0; i < vals.size(); i++)
+		// Negating Red
+		if (image_effect == '4')
 		{
-			if ((i + 0) % 3 == 0)
+			if (output.size() > 0)
 			{
-				color_val = 255 - vals[i];
-				output_file << color_val << endl;
+				vals = output;
+				output.clear();
 			}
-			else
+			for (int i = 0; i < vals.size(); i++)
 			{
-				output_file << vals[i] << endl;
-			}
+				if ((i + 0) % 3 == 0)
+				{
+					color_val = 255 - vals[i];
+					output.push_back(color_val);
+				}
+				else
+				{
+					output.push_back(vals[i]);
+				}
 
+			}
 		}
-	}
 
-	// Negating Green
-	if (image_effect == 5)
-	{
-		for (int i = 1; i < vals.size(); i++)
+		// Negating Green
+		if (image_effect == '5')
 		{
-			if ((i + 1) % 3 == 0)
+			if (output.size() > 0)
 			{
-				color_val = 255 - vals[i];
-				output_file << color_val << endl;
+				vals = output;
+				output.clear();
 			}
-			else
+			for (int i = 1; i < vals.size(); i++)
 			{
-				output_file << vals[i] << endl;
-			}
+				if ((i + 1) % 3 == 0)
+				{
+					color_val = 255 - vals[i];
+					output.push_back(color_val);
+				}
+				else
+				{
+					output.push_back(vals[i]);
+				}
 
+			}
 		}
-	}
 
-	// Negating Blue
-	if (image_effect == 6)
-	{
-		for (int i = 2; i < vals.size(); i++)
+		// Negating Blue
+		if (image_effect == '6')
 		{
-			if ((i + 2) % 3 == 0)
+			if (output.size() > 0)
 			{
-				color_val = 255 - vals[i];
-				output_file << color_val << endl;
+				vals = output;
+				output.clear();
 			}
-			else
+			for (int i = 2; i < vals.size(); i++)
 			{
-				output_file << vals[i] << endl;
-			}
+				if ((i + 2) % 3 == 0)
+				{
+					color_val = 255 - vals[i];
+					output.push_back(color_val);
+				}
+				else
+				{
+					output.push_back(vals[i]);
+				}
 
+			}
 		}
-	}
 
-	// Grayscale
-	if (image_effect == 7)
-	{
-		while (count <= 3)
+		// Grayscale
+		if (image_effect == '7')
 		{
-			for (int i = 0; i < vals.size(); i += 3)
+			if (output.size() > 0)
 			{
-				gray_val = (vals[i] + vals[i + 1] + vals[i + 2]) / 3;
-				output_file << gray_val << endl;
-				output_file << gray_val << endl;
-				output_file << gray_val << endl;
-				count = count++;
+				vals = output;
+				output.clear();
 			}
+			while (count <= 3)
+			{
+				for (int i = 0; i < vals.size(); i += 3)
+				{
+					gray_val = (vals[i] + vals[i + 1] + vals[i + 2]) / 3;
+					output_file << gray_val << endl;
+					output_file << gray_val << endl;
+					output_file << gray_val << endl;
+					count = count++;
+				}
 
+			}
 		}
-	}
-	//Adds Noise to the image
+		//Adds Noise to the image
 
-	if (image_effect == 8)
-	{
-		srand(time(0));
-		while (count <= 3)
+		if (image_effect == '8')
 		{
+			if (output.size() > 0)
+			{
+				vals = output;
+				output.clear();
+			}
+			srand(time(0));
 			randNum = rand() % (randMax - randMin + 1) + randMin;
-			for (int i = 0; i < vals.size(); i += 3)
+
+			for (int i = 0; i < vals.size(); i++)
 			{
-				if ((i + randNum > 0) && (i + randNum < 255))
+				if (i % 3 == 0)
+				{
+					randNum = rand() % (randMax - randMin + 1) + randMin;
+				}
+				if ((vals[i] + randNum > 0) && (vals[i] + randNum < 255))
 				{
 					color_val = randNum + vals[i];
-					output_file << color_val << endl;
-					color_val = randNum + vals[i + 1];
-					output_file << color_val << endl;
-					color_val = randNum + vals[i + 2];
-					output_file << color_val << endl;
-					count = count++;
+					output.push_back(color_val);
+
 				}
 
-				else if (i + randNum > 255)
+				else if (vals[i] + randNum >= 255)
 				{
-					output_file << 255 << endl;
-					count = count++;
-					output_file << 255 << endl;
-					count = count++;
-					output_file << 255 << endl;
-					count = count++;
+					output.push_back(255);
+
 				}
 
-				else if (i + randNum < 0)
+				else if (vals[i] + randNum <= 0)
 				{
-					output_file << 0 << endl;
-					count = count++;
-					output_file << 0 << endl;
-					count = count++;
-					output_file << 0 << endl;
-					count = count++;
+					output.push_back(0);
+
 				}
 			}
+
 		}
-		
-	}
+
+		if (image_effect == '9')
+		{
+			if (output.size() > 0)
+			{
+				vals = output;
+				output.clear();
+			}
+			for (int i = 0; i < vals.size(); i++)
+			{
+				if (vals[i] > (255 / 2))
+				{
+					output.push_back(255);
+
+				}
+
+				else
+				{
+					output.push_back(0);
+
+				}
+			}
+
+		}
 
 
-	// Quits program
-	if (image_effect == 'Q')
-	{
-		return 0;
+		// Quits program
+		if (image_effect == 'Q')
+		{
+			for (int i = 0; i < output.size(); i++)
+			{
+				output_file << output[i] << endl;
+			}
+			return 0;
+		}
 	}
 }

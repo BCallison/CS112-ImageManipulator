@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include <stdlib.h>
+#include <cstdlib>
 
 using namespace std;
 
@@ -28,7 +28,10 @@ int main(int argc, char* argv[])
 	int randMin = -10;
 	int randMax = 10;
 	int true_input = 0;
+	int num_rows = 0;
+	int num_columns = 0;
 	vector<int> output;
+	vector<vector<int>> data{};
 
 
 	//Getting source file
@@ -52,6 +55,11 @@ int main(int argc, char* argv[])
 		cout << "7. Grayscale" << endl;
 		cout << "8. Add Noise" << endl;
 		cout << "9. High Contrast" << endl;
+		cout << "10. Flip Horizontally" << endl;
+		cout << "11. Flip Vertically" << endl;
+		cout << "12. Blur" << endl;
+		cout << "13. Pixelate" << endl;
+		cout << "14. Rotate 90" << endl;
 		cout << "Q. Quit" << endl;
 
 
@@ -62,7 +70,7 @@ int main(int argc, char* argv[])
 
 
 		//Open the output file
-		ofstream output_file{ output_file_name };
+		ofstream output_file{ output_file_name }; 
 
 		vector<string> lines{};
 		if (input.is_open() == true)
@@ -74,6 +82,10 @@ int main(int argc, char* argv[])
 				lines.push_back(line);
 			}
 		}
+
+		istringstream image_dimensions{ lines[1] };
+		image_dimensions >> num_columns;
+		image_dimensions >> num_rows;
 
 
 		vector<int> vals{};
@@ -207,6 +219,7 @@ int main(int argc, char* argv[])
 
 			}
 		}
+		
 
 		// Negating Blue
 		if (image_effect == '6')
@@ -292,6 +305,8 @@ int main(int argc, char* argv[])
 
 		}
 
+		// High Contrast
+
 		if (image_effect == '9')
 		{
 			if (output.size() > 0)
@@ -315,6 +330,45 @@ int main(int argc, char* argv[])
 			}
 
 		}
+
+
+		// Flip Horizontally
+		if (image_effect == '10')
+		{
+			// Begin by setting number of rows
+			data.resize(num_rows * 3);
+
+			//resize each row to be correct width
+			for (int i = 0; i < num_rows; i++)
+			{
+				data[i].resize(num_columns * 3);
+			}
+
+			//set individual pixel
+
+			ifstream input_file{};
+			int row_counter = 0;
+			int column_counter = 0;
+			/*while (input_file.good() == true)
+			{
+				int next_num = 0;
+				input_file >> next_num;
+				//pushback
+				data[row_counter][column_counter] = next_num;
+			}*/
+
+			int temp_max = 0;
+			int temp_min = 0;
+			for (int i = 0; i < num_columns; i++)
+			{
+				for (i = 0; i < (num_rows / 2); i++)
+				{
+					swap(data[i], data[num_columns - i]);
+				}
+			}
+		}
+
+
 
 
 		// Quits program

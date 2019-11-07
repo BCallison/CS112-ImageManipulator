@@ -30,6 +30,8 @@ int main(int argc, char* argv[])
 	int true_input = 0;
 	int num_rows = 0;
 	int num_columns = 0;
+	int curr_y = 0;
+	int curr_x = 0;
 	vector<int> output;
 	vector<vector<int>> data{};
 
@@ -341,7 +343,14 @@ int main(int argc, char* argv[])
 			//resize each row to be correct width
 			for (int i = 0; i < num_rows; i++)
 			{
-				data[i].resize(num_columns * 3);
+				curr_x = 0;
+				while (i < num_rows)
+				{
+
+					data[curr_y][curr_x];
+					curr_x++;
+				}
+				curr_y++;
 			}
 
 			//set individual pixel

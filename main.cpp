@@ -13,6 +13,7 @@ int main(int argc, char* argv[])
 	string file;
 
 	ifstream inPix;
+	ofstream output_file;
 	inPix.open(file);
 	string input_file;
 	string line;
@@ -24,6 +25,10 @@ int main(int argc, char* argv[])
 	int color_val = 0;
 	int gray_val = 0;
 	int count = 0;
+	string line1;
+	string line2;
+	string line3;
+	string line4;
 	int randNum = 0;
 	int randMin = -10;
 	int randMax = 10;
@@ -90,7 +95,36 @@ int main(int argc, char* argv[])
 		image_dimensions >> num_rows;
 
 
-		vector<int> vals{};
+
+		while (data.size() < (output.size() / num_columns))
+		{
+			vector<int> temp;
+			for (int x = 0; x < output.size(); x++)
+			{
+				if (temp.size() < (num_rows * 3))
+				{
+					temp.push_back(output[x]);
+				}
+			}
+			data.push_back(temp);
+		}
+
+		cout << output.size() << endl;
+		cout << data.size();
+
+		if (image_effect == '10')
+		{
+			for (int i = 0; i < data.size(); i++)
+			{
+				for (int x = 0, y = (data[i].size() - 1); x < data[i].size() && y >= 0; x++, y--)
+				{
+					data[i][x] = data[i][y];
+					data[i][y] = data[i][x];
+				}
+			}
+		}
+
+		/* vector<int> vals{};
 		for (int i = 3; i != lines.size(); i++)
 		{
 			string sentence = lines[i];
@@ -332,52 +366,24 @@ int main(int argc, char* argv[])
 			}
 
 		}
+*/
+
+output_file.open(output_file_name);
+
+output_file << line1 << endl
+<< line2 << endl
+<< line3 << endl
+<< line4 << endl;
 
 
-		// Flip Horizontally
-		if (image_effect == '10')
-		{
-			// Begin by setting number of rows
-			data.resize(num_rows * 3);
-
-			//resize each row to be correct width
-			for (int i = 0; i < num_rows; i++)
-			{
-				curr_x = 0;
-				while (i < num_rows)
-				{
-
-					data[curr_y][curr_x];
-					curr_x++;
-				}
-				curr_y++;
-			}
-
-			//set individual pixel
-
-			ifstream input_file{};
-			int row_counter = 0;
-			int column_counter = 0;
-			/*while (input_file.good() == true)
-			{
-				int next_num = 0;
-				input_file >> next_num;
-				//pushback
-				data[row_counter][column_counter] = next_num;
-			}*/
-
-			int temp_max = 0;
-			int temp_min = 0;
-			for (int i = 0; i < num_columns; i++)
-			{
-				for (i = 0; i < (num_rows / 2); i++)
-				{
-					swap(data[i], data[num_columns - i]);
-				}
-			}
-		}
-
-
+for (int i = 0; i < data.size(); i++)
+{
+	for (int x = 0; x < data[i].size(); x++)
+	{
+		output_file << data[i][x] << ' ';
+	}
+	output_file << endl;
+}
 
 
 		// Quits program

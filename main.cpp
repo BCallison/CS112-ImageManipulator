@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
 
 
 		//Open the output file
-		ofstream output_file{ output_file_name }; 
+		ofstream output_file{ output_file_name };
 
 		vector<string> lines{};
 		if (input.is_open() == true)
@@ -91,20 +91,22 @@ int main(int argc, char* argv[])
 		image_dimensions >> num_rows;
 
 		//resizing?
-		while (!input.eof()) {
-			for (int i = 0; i < 1; i++)
+		vector<string> tmpVec;
+		for (int i = 3; i < lines.size(); i++)
+		{
+			istringstream lines_i{ lines[i] };
+
+			string tmpString;
+
+			while (lines_i.good() == num_columns * 3)
 			{
-				vector<string> tmpVec;
-				string tmpString;
-			
-				for (int j = 0; j < 4; j++) 
-				{
-						myReadFile >> tmpString;
-						tmpVec.push_back(tmpString);
-					}
-				data.push_bac(tmpVec);
+				lines_i >> tmpString;
+				tmpVec.push_back(tmpString);
+				tmpVec.clear;
 			}
+			data.push_back(tmpVec);
 		}
+
 
 		// Begin by setting number of rows
 		data.resize(num_rows * 3);
@@ -255,7 +257,7 @@ int main(int argc, char* argv[])
 
 			}
 		}
-		
+
 
 		// Negating Blue
 		if (image_effect == '6')
@@ -369,7 +371,7 @@ int main(int argc, char* argv[])
 */
 
 
-		// Quits program
+// Quits program
 		if (image_effect == 'Q')
 		{
 			for (int i = 0; i < output.size(); i++)

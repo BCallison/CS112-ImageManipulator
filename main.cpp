@@ -86,6 +86,11 @@ int main(int argc, char* argv[])
 			}
 		}
 
+		for (int i = 0; i < lines.size(); i++)
+		{
+			output_file << lines[i] << endl;
+		}
+
 		istringstream image_dimensions{ lines[1] };
 		image_dimensions >> num_columns;
 		image_dimensions >> num_rows;
@@ -102,9 +107,9 @@ int main(int argc, char* argv[])
 			{
 				lines_i >> tmpString;
 				tmpVec.push_back(tmpString);
-				tmpVec.clear;
+//				tmpVec.clear;
 			}
-			data.push_back(tmpVec);
+			//data.push_back(tmpVec);
 		}
 
 
@@ -120,7 +125,7 @@ int main(int argc, char* argv[])
 				for (int j = 0; j < (num_rows / 2); j++)
 				{
 					swap(data[i], data[num_columns - i]);
-					cout << data[i] << " " << data[num_columns - i];
+					//cout << data[i] << " " << data[num_columns - i];
 				}
 			}
 		}
